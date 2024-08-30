@@ -10,7 +10,7 @@ import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com
 const firebaseConfig = {
      apiKey: "AIzaSyBjzzTtIJl17ktCowriCEDjxBh--ztzJUI",
      authDomain: "identifierr.firebaseapp.com",
-     databaseURL: "https://identifierr-default-rtdb.asia-southeast1.firebasedatabase.app",
+     databaseURL: "https://identifierr-default-rtdb.asia-southeast1.firebasedatabase.app/",
      projectId: "identifierr",
      storageBucket: "identifierr.appspot.com",
      messagingSenderId: "1070781758437",
