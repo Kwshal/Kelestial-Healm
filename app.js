@@ -55,7 +55,7 @@ submitBtn.addEventListener('click', () => {
 //      result.innerHTML = table;
 // });
 
-function deleteData(key) {
-     remove(ref(database, 'users/Data/' + key));
-}
+// function deleteData(key) {
+//      remove(ref(database, 'Data' + key));
+// }
 
