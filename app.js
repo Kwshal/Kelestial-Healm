@@ -28,7 +28,8 @@ let error = document.getElementById('error');
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 
-const userData = ref(database, 'Data');
+const userData = ref(database, "Data");
+
 
 
 submitBtn.addEventListener('click', () => {
