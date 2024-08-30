@@ -28,34 +28,32 @@ let error = document.getElementById('error');
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 
-const userData = ref(database, 'users/Data');
+const userData = ref(database, 'Data');
 
 
 submitBtn.addEventListener('click', () => {
      if (userInput.value == '') {
           error.innerHTML = 'Please enter a name';
      } else {
-          push(userData, {
-               name: userInput.value
-          });
+          push(userData, userInput.value);
           userInput.value = '';
           error.innerHTML = 'done! pushed to database';
      }
 });
 
-onValue(userData, (snapshot) => {
-     let data = snapshot.val();
-     let table = '';
-     if (data !== null) {
-          Object.keys(data).forEach(key => {
-               table += `<tr>
-               <td>${data[key].name}</td>
-               <td><button onclick="deleteData('${key}')">Delete</button></td>
-               </tr>`;
-          });
-     }
-     result.innerHTML = table;
-});
+// onValue(userData, (snapshot) => {
+//      let data = snapshot.val();
+//      let table = '';
+//      if (data !== null) {
+//           Object.keys(data).forEach(key => {
+//                table += `<tr>
+//                <td>${data[key].name}</td>
+//                <td><button onclick="deleteData('${key}')">Delete</button></td>
+//                </tr>`;
+//           });
+//      }
+//      result.innerHTML = table;
+// });
 
 function deleteData(key) {
      remove(ref(database, 'users/Data/' + key));
