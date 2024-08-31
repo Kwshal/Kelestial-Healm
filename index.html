@@ -1,20 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="style.css">
         <title>Kelestial Healm</title>
 </head>
+
 <body>
         <h1>Kelestial Healm</h1>
-        <input type="text" id="user-input">
-        <input type="submit" id="submit-button">
-        <div id="result"></div>
-        <div id="error"></div>
-        
+        <form id="form">
+                <input type="text" id="user-input" placeholder="Name">
+                <input type="text" id="user-fav-num-input" placeholder="Favorite Number">
+                <input type="submit" id="submit-button" value="Submit">
+                <input type="submit" id="update-button" value="Update">
+                <input type="submit" id="delete-button" value="Delete">
+                <input type="submit" id="get-button" value="Get">
+
+                <div id="result"></div>
+                <div id="errorMsg"></div>
+        </form>
 
 
-        <script type="module" src="app.js"></script>
+
+        <script type="module">
+
+                import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+                import { getDatabase, ref, child, get, set, update, remove } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js";
+
+                const firebaseConfig = {
+                        apiKey: "AIzaSyBjzzTtIJl17ktCowriCEDjxBh--ztzJUI",
+                        authDomain: "identifierr.firebaseapp.com",
+                        databaseURL: "https://identifierr-default-rtdb.asia-southeast1.firebasedatabase.app/",
+                        projectId: "identifierr",
+                        storageBucket: "identifierr.appspot.com",
+                        messagingSenderId: "1070781758437",
+                        appId: "1:1070781758437:web:c8f7396e6789af200c4d0c",
+                        measurementId: "G-GDFXKZZ1ZT"
+                };
+
+                const app = initializeApp(firebaseConfig);
+                const database = getDatabase(app);
+
+                let userInput = document.getElementById('user-input');
+                let userFavNumInp = document.getElementById('user-fav-num-input');
+                let result = document.getElementById('result');
+                let errorMsg = document.getElementById('errorMsg');
+
+                function addData() {
+                        errorMsg.innerHTML = "";
+                        result.innerHTML = "";
+                        if (userInput.value == "" || userFavNumInp.value == "") {
+                                errorMsg.innerHTML = "Please enter your name and favorite number";
+                        } else {
+                                set(ref(database, 'users/' + userInput.value), {
+                                        name: userInput.value,
+                                        userFavNum: userFavNumInp.value,
+                                });
+                                result.innerHTML = "Data submitted successfully";
+                        }
+                }
+                // Get all users data and display them in a table
+                function getData() {
+                        get(child(ref(database), 'users')).then((snapshot) => {
+                                if (snapshot.exists()) {
+                                        let data = snapshot.val();
+                                        let table = document.createElement('table');
+                                        table.innerHTML = '<tr><th>Name</th><th>Favorite Number</th></tr>';
+                                        for (let key in data) {
+                                                let row = table.insertRow();
+                                                let nameCell = row.insertCell();
+                                                let favNumCell = row.insertCell();
+                                                nameCell.innerHTML = data[key].name;
+                                                favNumCell.innerHTML = data[key].userFavNum;
+                                        }
+                                        result.appendChild(table);
+                                } else {
+                                        result.innerHTML = "No data available";
+                                }
+                        }).catch((error) => {
+                                errorMsg = "Error getting data: " + error.message;
+                        });
+                }
+
+                function updateData() {
+                        errorMsg.innerHTML = "";
+                        result.innerHTML = "";
+                        if (userInput.value == "" || userFavNumInp.value == "") {
+                                errorMsg.innerHTML = "Please enter your name and favorite number";
+                        } else {
+                                update(ref(database, 'users/' + userInput.value), {
+                                        name: userInput.value,
+                                        userFavNum: userFavNumInp.value,
+                                }).then(() => {
+                                        result.innerHTML = "Data updated successfully";
+                                }).catch((error) => {
+                                        errorMsg.innerHTML = "Failed to update data";
+                                });
+                        }
+                }
+
+                function deleteData() {
+                        errorMsg.innerHTML = "";
+                        result.innerHTML = "";
+                        if (userInput.value == "") {
+                                errorMsg.innerHTML = "Please enter your name";
+                        } else {
+                                remove(ref(database, 'users/' + userInput.value)).then(() => {
+                                        result.innerHTML = "Data deleted successfully";
+                                }).catch((error) => {
+                                        errorMsg.innerHTML = "Failed to delete data";
+                                });
+                        }
+                }
+
+                // Add event listeners to the buttons
+                document.getElementById('submit-button').addEventListener('click', addData);
+                document.getElementById('update-button').addEventListener('click', updateData);
+                document.getElementById('delete-button').addEventListener('click', deleteData);
+
+        </script>
 </body>
+
 </html>
