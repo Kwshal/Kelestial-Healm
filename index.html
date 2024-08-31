@@ -20,6 +20,7 @@
 
                 <div id="result"></div>
                 <div id="errorMsg"></div>
+                <i> See <a href="https://identifierr-default-rtdb.asia-southeast1.firebasedatabase.app/">Database</a></i>
         </form>
 
 
@@ -118,6 +119,7 @@
                 // Add event listeners to the buttons
                 document.getElementById('submit-button').addEventListener('submit', e => {
                         e.preventDefault();
+                        console.log("Submitted");
                         addData();
                 });
                 document.getElementById('get-button').addEventListener('submit', e => {
