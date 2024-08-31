@@ -116,10 +116,22 @@
                 }
 
                 // Add event listeners to the buttons
-                document.getElementById('submit-button').addEventListener('submit', addData);
-                document.getElementById('update-button').addEventListener('submit', updateData);
-                document.getElementById('delete-button').addEventListener('submit', deleteData);
-
+                document.getElementById('submit-button').addEventListener('submit', e => {
+                        e.preventDefault();
+                        addData();
+                });
+                document.getElementById('get-button').addEventListener('submit', e => {
+                        e.preventDefault();
+                        getData();
+                });
+                document.getElementById('update-button').addEventListener('submit', e => {
+                        e.preventDefault();
+                        updateData();
+                });
+                document.getElementById('delete-button').addEventListener('submit', e => {
+                        e.preventDefault()
+                        deleteData();
+                });
         </script>
 </body>
 
