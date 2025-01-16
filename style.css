@@ -1,10 +1,8 @@
 
 
 
-
-h1 {
-    color: #45a049;
-    background-color: #45a04944;
+* {
+    box-sizing: border-box;
 }
 
 a {
@@ -14,19 +12,27 @@ a {
 }
 
 body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
     padding: 0;
     margin: 0;
-    border-top: 4px solid #4CAF50;
-    background-color: #f5f5f5;
+    /* border: 4px solid #4CAF50; */
+    background-color: #e9eaf0;
+    /* background: #000; */
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 form {
-    width: 500px;
+    width: 335px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
     background-color: #fff;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    /* box-shadow: 0 0 10px rgba(0,0,0,0.1); */
     margin: 20px auto;
 }
 
@@ -37,30 +43,90 @@ form input[type="number"] {
     box-sizing: border-box;
     border-radius: 5px;
     border: 1px solid #ccc;
-    margin-bottom: 10px;
+    /* margin-bottom: 10px; */
 }
 
-form input[type="submit"] {
-    background-color: #4CAF50;
-    color: #fff;
-    padding: 10px 20px;
+#button-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 3%;
+    /* border: 1px solid #000; */
+}
+
+button[type="submit"] {
+    color: #ffffff;
+    padding: 5px;
     border: none;
     border-radius: 5px;
+    width: 100%;
+    /* aspect-ratio: 1; */
     cursor: pointer;
+    /* margin-bottom: 10px; */
 }
+
+#submit-button {
+    background-color: #4CAF50;
+}
+#update-button {
+    background-color: #4c93af;
+}
+#delete-button {
+    background-color: #af7c4c;
+}
+#get-button {
+    background-color: #4caf50;
+    filter: saturate(0%);
+}
+    
 
 form input[type="submit"]:hover {
     background-color: #45a049;
 }
 
-h1 {
+#result, #errorMsg {
+    /* margin-top: 20px; */
     text-align: center;
-    font-size: 24px;
-    margin-bottom: 20px;
+    font-size: 15px;
+    display: none;
+    /* font-variant: normal; */
 }
 
-div#result, div#errorMsg {
-    margin-top: 20px;
+/* Loading Spinner */
+#loading-spinner {
     text-align: center;
-    font-size: 18px;
+    margin-top: 15px;
+    font-size: 0.85rem;
+    color: var(--text-color);
+}
+
+#errorMsg {
+    color: var(--error-text-color);
+    background-color: var(--error-background);
+    border: 1px solid var(--error-border);
+    display: none;
+}
+
+#result {
+    color: var(--success-text-color);
+    background-color: var(--success-background);
+    background-color: #ececec;
+    border: 1px solid var(--success-border);
+    display: none;
+}/* Root Variables */
+:root {
+    --background-color: #222222; /* Original dark background */
+    --text-color: #ffffff; /* Original text color */
+    --form-background: #333333; /* Original form background */
+    --input-background: #555555; /* Original input background */
+    --button-background: #666666; /* Original button background */
+    --button-hover: #444444; /* Button hover color */
+    --button-disabled: #777777; /* Disabled button color */
+    --error-text-color: #ffcccc; /* Error message text */
+    --error-background: #442222; /* Error message background */
+    --error-border: #660000; /* Error message border */
+    --success-text-color: #ccffcc; /* Success message text */
+    --success-background: #224422; /* Success message background */
+    --success-border: #006600; /* Success message border */
+    --link-color: #66ccff; /* Link text color */
 }

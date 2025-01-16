@@ -2,138 +2,193 @@
 <html lang="en">
 
 <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="style.css">
-        <title>Kelestial Healm</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Kelestial Healm</title>
 </head>
 
 <body>
-        <h1>Kelestial Healm</h1>
-        <form id="form" onsubmit="return false">
-                <input type="text" id="user-input" placeholder="Name">
-                <input type="text" id="user-fav-num-input" placeholder="Favorite Number">
-                <input type="submit" id="submit-button" value="Submit">
-                <input type="submit" id="update-button" value="Update">
-                <input type="submit" id="delete-button" value="Delete">
-                <input type="submit" id="get-button" value="Get">
+    <form id="form" onsubmit="return false">
+        <label for="user-input">Name:</label>
+        <input type="text" id="user-input" placeholder="Name" required>
 
-                <div id="result"></div>
-                <div id="errorMsg"></div>
-                <i> See <a href="https://identifierr-default-rtdb.asia-southeast1.firebasedatabase.app/">Database</a></i>
-        </form>
+        <label for="user-fav-num-input">Favorite Number:</label>
+        <input type="text" id="user-fav-num-input" placeholder="Favorite Number" required>
 
+        <div id="errorMsg">Fill both fields</div>
+        <div id="button-container">
+            <button type="submit" id="submit-button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="4" y1="12" x2="18" y2="12"></line>
+                    <polyline points="12 6 18 12 12 18"></polyline>
+                </svg>
+            </button>
+            <button type="submit" id="update-button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 11.5A8.5 8.5 0 1 0 12 21"></path>
+                    <polyline points="20 4 20 11 13 11"></polyline>
+                </svg>
+            </button>
+            <button type="submit" id="delete-button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="3 6 5 6 21 6"></polyline>
+                    <path d="M19 6L19 19a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2L5 6"></path>
+                    <line x1="10" y1="11" x2="10" y2="17"></line>
+                    <line x1="14" y1="11" x2="14" y2="17"></line>
+                </svg>
+            </button>
+            <button type="submit" id="get-button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="20" y1="12" x2="6" y2="12"></line>
+                    <polyline points="10 18 6 12 10 6"></polyline>
+                </svg>
+            </button>
+        </div>
 
+        <div id="result">Data submitted successfully</div>
+        <div id="loading-spinner" style="display: none;">Loading...</div>
 
-        <script type="module">
+        <i>See <a href="https://identifierr-default-rtdb.asia-southeast1.firebasedatabase.app/">Database</a></i>
+    </form>
 
-                import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
-                import { getDatabase, ref, child, get, set, update, remove } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js";
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+        import { getDatabase, ref, child, get, set, update, remove } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js";
 
-                const firebaseConfig = {
-                        apiKey: "AIzaSyBjzzTtIJl17ktCowriCEDjxBh--ztzJUI",
-                        authDomain: "identifierr.firebaseapp.com",
-                        databaseURL: "https://identifierr-default-rtdb.asia-southeast1.firebasedatabase.app/",
-                        projectId: "identifierr",
-                        storageBucket: "identifierr.appspot.com",
-                        messagingSenderId: "1070781758437",
-                        appId: "1:1070781758437:web:c8f7396e6789af200c4d0c",
-                        measurementId: "G-GDFXKZZ1ZT"
-                };
+        const firebaseConfig = {
+            apiKey: "AIzaSyBjzzTtIJl17ktCowriCEDjxBh--ztzJUI",
+            authDomain: "identifierr.firebaseapp.com",
+            databaseURL: "https://identifierr-default-rtdb.asia-southeast1.firebasedatabase.app/",
+            projectId: "identifierr",
+            storageBucket: "identifierr.appspot.com",
+            messagingSenderId: "1070781758437",
+            appId: "1:1070781758437:web:c8f7396e6789af200c4d0c",
+            measurementId: "G-GDFXKZZ1ZT"
+        };
 
-                const app = initializeApp(firebaseConfig);
-                const database = getDatabase(app);
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
 
-                let userInput = document.getElementById('user-input');
-                let userFavNumInp = document.getElementById('user-fav-num-input');
-                let result = document.getElementById('result');
-                let errorMsg = document.getElementById('errorMsg');
+        let userInput = document.getElementById('user-input');
+        let userFavNumInp = document.getElementById('user-fav-num-input');
+        let result = document.getElementById('result');
+        let errorMsg = document.getElementById('errorMsg');
+        let spinner = document.getElementById('loading-spinner');
 
-                function addData() {
-                        errorMsg.innerHTML = "";
-                        result.innerHTML = "";
-                        if (userInput.value == "" || userFavNumInp.value == "") {
-                                errorMsg.innerHTML = "Please enter your name and favorite number";
-                        } else {
-                                set(ref(database, 'users/' + userInput.value), {
-                                        name: userInput.value,
-                                        userFavNum: userFavNumInp.value,
-                                });
-                                result.innerHTML = "Data submitted successfully";
-                        }
-                }
-                // Get all users data and display them in a table
-                function getData() {
-                        get(child(ref(database), 'users')).then((snapshot) => {
-                                if (snapshot.exists()) {
-                                        let data = snapshot.val();
-                                        let table = document.createElement('table');
-                                        table.innerHTML = '<tr><th>Name</th><th>Favorite Number</th></tr>';
-                                        for (let key in data) {
-                                                let row = table.insertRow();
-                                                let nameCell = row.insertCell();
-                                                let favNumCell = row.insertCell();
-                                                nameCell.innerHTML = data[key].name;
-                                                favNumCell.innerHTML = data[key].userFavNum;
-                                        }
-                                        result.appendChild(table);
-                                } else {
-                                        result.innerHTML = "No data available";
-                                }
-                        }).catch((error) => {
-                                errorMsg = "Error getting data: " + error.message;
-                        });
-                }
-
-                function updateData() {
-                        errorMsg.innerHTML = "";
-                        result.innerHTML = "";
-                        if (userInput.value == "" || userFavNumInp.value == "") {
-                                errorMsg.innerHTML = "Please enter your name and favorite number";
-                        } else {
-                                update(ref(database, 'users/' + userInput.value), {
-                                        name: userInput.value,
-                                        userFavNum: userFavNumInp.value,
-                                }).then(() => {
-                                        result.innerHTML = "Data updated successfully";
-                                }).catch((error) => {
-                                        errorMsg.innerHTML = "Failed to update data";
-                                });
-                        }
-                }
-
-                function deleteData() {
-                        errorMsg.innerHTML = "";
-                        result.innerHTML = "";
-                        if (userInput.value == "") {
-                                errorMsg.innerHTML = "Please enter your name";
-                        } else {
-                                remove(ref(database, 'users/' + userInput.value)).then(() => {
-                                        result.innerHTML = "Data deleted successfully";
-                                }).catch((error) => {
-                                        errorMsg.innerHTML = "Failed to delete data";
-                                });
-                        }
-                }
-
-                // Add event listeners to the buttons
-                document.getElementById('submit-button').addEventListener('click', e => {
-                        e.preventDefault();
-                        addData();
+        function addData() {
+            errorMsg.style.display = "none";
+            result.style.display = "none";
+            if (userInput.value == "" || userFavNumInp.value == "") {
+                errorMsg.innerHTML = "Please fill out all fields.";
+                errorMsg.style.display = "block";
+            } else {
+                set(ref(database, 'users/' + userInput.value), {
+                    name: userInput.value,
+                    userFavNum: userFavNumInp.value,
+                }).then(() => {
+                    result.innerHTML = "Data added successfully!";
+                    result.style.display = "block";
+                }).catch((error) => {
+                    errorMsg.innerHTML = "Error adding data: " + error.message;
+                    errorMsg.style.display = "block";
                 });
-                document.getElementById('get-button').addEventListener('click', e => {
-                        e.preventDefault();
-                        getData();
+            }
+        }
+
+        function getData() {
+            result.style.display = 'none';
+            errorMsg.style.display = 'none';
+            spinner.style.display = 'block';
+
+            get(child(ref(database), 'users')).then((snapshot) => {
+                spinner.style.display = 'none';
+                if (snapshot.exists()) {
+                    let data = snapshot.val();
+                    let table = document.createElement('table');
+                    table.innerHTML = '<tr><th>Name</th><th>Favorite Number</th></tr>';
+                    for (let key in data) {
+                        let row = table.insertRow();
+                        let nameCell = row.insertCell();
+                        let favNumCell = row.insertCell();
+                        nameCell.innerHTML = data[key].name;
+                        favNumCell.innerHTML = data[key].userFavNum;
+                    }
+                    result.innerHTML = ''; // Clear previous results
+                    result.appendChild(table);
+                    result.style.display = 'block';
+                } else {
+                    result.innerHTML = 'No data available';
+                    result.style.display = 'block';
+                }
+            }).catch((error) => {
+                spinner.style.display = 'none';
+                errorMsg.innerHTML = "Error retrieving data: " + error.message;
+                errorMsg.style.display = 'block';
+            });
+        }
+
+        function updateData() {
+            errorMsg.style.display = "none";
+            result.style.display = "none";
+            if (userInput.value == "" || userFavNumInp.value == "") {
+                errorMsg.innerHTML = "Please fill out all fields.";
+                errorMsg.style.display = "block";
+            } else {
+                update(ref(database, 'users/' + userInput.value), {
+                    name: userInput.value,
+                    userFavNum: userFavNumInp.value,
+                }).then(() => {
+                    result.innerHTML = "Data updated successfully!";
+                    result.style.display = "block";
+                }).catch((error) => {
+                    errorMsg.innerHTML = "Error updating data: " + error.message;
+                    errorMsg.style.display = "block";
                 });
-                document.getElementById('update-button').addEventListener('click', e => {
-                        e.preventDefault();
-                        updateData();
+            }
+        }
+
+        function deleteData() {
+            errorMsg.style.display = "none";
+            result.style.display = "none";
+            if (userInput.value == "") {
+                errorMsg.innerHTML = "Please enter a valid name to delete.";
+                errorMsg.style.display = "block";
+            } else {
+                remove(ref(database, 'users/' + userInput.value)).then(() => {
+                    result.innerHTML = "Data deleted successfully!";
+                    result.style.display = "block";
+                }).catch((error) => {
+                    errorMsg.innerHTML = "Error deleting data: " + error.message;
+                    errorMsg.style.display = "block";
                 });
-                document.getElementById('delete-button').addEventListener('click', e => {
-                        e.preventDefault()
-                        deleteData();
-                });
-        </script>
+            }
+        }
+
+        document.getElementById('submit-button').addEventListener('click', e => {
+            e.preventDefault();
+            addData();
+        });
+
+        document.getElementById('get-button').addEventListener('click', e => {
+            e.preventDefault();
+            getData();
+        });
+
+        document.getElementById('update-button').addEventListener('click', e => {
+            e.preventDefault();
+            updateData();
+        });
+
+        document.getElementById('delete-button').addEventListener('click', e => {
+            e.preventDefault();
+            deleteData();
+        });
+    </script>
 </body>
 
 </html>
