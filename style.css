@@ -1,3 +1,19 @@
+:root {
+    --background-color: #222222; /* Original dark background */
+    --text-color: #ffffff; /* Original text color */
+    --form-background: #333333; /* Original form background */
+    --input-background: #555555; /* Original input background */
+    --button-background: #666666; /* Original button background */
+    --button-hover: #444444; /* Button hover color */
+    --button-disabled: #777777; /* Disabled button color */
+    --error-text-color: #ffffff; /* Error message text */
+    --error-background: #996161; /* Error message background */
+    --error-border: #ffffff00; /* Error message border */
+    --success-text-color: #ccffcc; /* Success message text */
+    --success-background: #224422; /* Success message background */
+    --success-border: #006600; /* Success message border */
+    --link-color: #66ccff; /* Link text color */
+}
 
 
 
@@ -104,29 +120,22 @@ form input[type="submit"]:hover {
     color: var(--error-text-color);
     background-color: var(--error-background);
     border: 1px solid var(--error-border);
+    border-radius: 4px;
     display: none;
 }
 
 #result {
-    color: var(--success-text-color);
+    color: var(--success-background);
     background-color: var(--success-background);
     background-color: #ececec;
     border: 1px solid var(--success-border);
     display: none;
-}/* Root Variables */
-:root {
-    --background-color: #222222; /* Original dark background */
-    --text-color: #ffffff; /* Original text color */
-    --form-background: #333333; /* Original form background */
-    --input-background: #555555; /* Original input background */
-    --button-background: #666666; /* Original button background */
-    --button-hover: #444444; /* Button hover color */
-    --button-disabled: #777777; /* Disabled button color */
-    --error-text-color: #ffcccc; /* Error message text */
-    --error-background: #442222; /* Error message background */
-    --error-border: #660000; /* Error message border */
-    --success-text-color: #ccffcc; /* Success message text */
-    --success-background: #224422; /* Success message background */
-    --success-border: #006600; /* Success message border */
-    --link-color: #66ccff; /* Link text color */
+}
+
+svg.rotatable {
+    rotate: -45deg;
+}
+
+#db {
+    display: none;
 }

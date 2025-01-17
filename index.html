@@ -19,7 +19,7 @@
         <div id="errorMsg">Fill both fields</div>
         <div id="button-container">
             <button type="submit" id="submit-button">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                <svg  class="rotatable" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <line x1="4" y1="12" x2="18" y2="12"></line>
                     <polyline points="12 6 18 12 12 18"></polyline>
@@ -42,7 +42,7 @@
                 </svg>
             </button>
             <button type="submit" id="get-button">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                <svg  class="rotatable" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <line x1="20" y1="12" x2="6" y2="12"></line>
                     <polyline points="10 18 6 12 10 6"></polyline>
@@ -51,9 +51,10 @@
         </div>
 
         <div id="result">Data submitted successfully</div>
+        <div id="names-tables"></div>
         <div id="loading-spinner" style="display: none;">Loading...</div>
 
-        <i>See <a href="https://identifierr-default-rtdb.asia-southeast1.firebasedatabase.app/">Database</a></i>
+        <i id="db">See <a href="https://identifierr-default-rtdb.asia-southeast1.firebasedatabase.app/">Database</a></i>
     </form>
 
     <script type="module">
@@ -77,6 +78,7 @@
         let userInput = document.getElementById('user-input');
         let userFavNumInp = document.getElementById('user-fav-num-input');
         let result = document.getElementById('result');
+        let namesTables = document.getElementById('names-tables');
         let errorMsg = document.getElementById('errorMsg');
         let spinner = document.getElementById('loading-spinner');
 
@@ -118,9 +120,9 @@
                         nameCell.innerHTML = data[key].name;
                         favNumCell.innerHTML = data[key].userFavNum;
                     }
-                    result.innerHTML = ''; // Clear previous results
-                    result.appendChild(table);
-                    result.style.display = 'block';
+                    // result.innerHTML = ''; // Clear previous results
+                    namesTables.appendChild(table);
+                    // result.style.display = 'none';
                 } else {
                     result.innerHTML = 'No data available';
                     result.style.display = 'block';
@@ -136,7 +138,7 @@
             errorMsg.style.display = "none";
             result.style.display = "none";
             if (userInput.value == "" || userFavNumInp.value == "") {
-                errorMsg.innerHTML = "Please fill out all fields.";
+                errorMsg.innerHTML = "Please fill the name.";
                 errorMsg.style.display = "block";
             } else {
                 update(ref(database, 'users/' + userInput.value), {
@@ -188,6 +190,11 @@
             e.preventDefault();
             deleteData();
         });
+        userInput.oninput = () => {
+            let db = document.getElementById("db");
+            if (userInput.value == "kwshal") db.style.display = "inline";
+            else db.style.display = "none";
+        }
     </script>
 </body>
 
