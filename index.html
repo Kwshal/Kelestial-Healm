@@ -86,23 +86,34 @@
             errorMsg.style.display = "none";
             result.style.display = "none";
             if (userInput.value == "" || userFavNumInp.value == "") {
-                errorMsg.innerHTML = "Please fill out all fields.";
-                errorMsg.style.display = "block";
+            errorMsg.innerHTML = "Please fill out all fields.";
+            errorMsg.style.display = "block";
             } else {
+            // Check if user exists first
+            get(child(ref(database), 'users/' + userInput.value)).then((snapshot) => {
+                if (snapshot.exists()) {
+                errorMsg.innerHTML = "User already exists!";
+                errorMsg.style.display = "block";
+                return;
+                }
+                
+                // If user doesn't exist, add the data
                 set(ref(database, 'users/' + userInput.value), {
-                    name: userInput.value,
-                    userFavNum: userFavNumInp.value,
+                name: userInput.value,
+                userFavNum: userFavNumInp.value,
                 }).then(() => {
-                    result.innerHTML = "Data added successfully!";
-                    result.style.display = "block";
+                result.innerHTML = "Data added successfully!";
+                result.style.display = "block";
                 }).catch((error) => {
-                    errorMsg.innerHTML = "Error adding data: " + error.message;
-                    errorMsg.style.display = "block";
+                errorMsg.innerHTML = "Error adding data: " + error.message;
+                errorMsg.style.display = "block";
                 });
+            });
             }
         }
 
         function getData() {
+            namesTables.innerHTML = '';
             result.style.display = 'none';
             errorMsg.style.display = 'none';
             spinner.style.display = 'block';
